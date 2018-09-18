@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
   <ul class="list-group content" v-show="$store.getters.todos.length">
     <li
         v-for="task in todos"
@@ -10,7 +10,7 @@
         <form v-on:submit.prevent="saveChange(task.id)" v-on:dblclick="editTask(task.id)" v-on:keyup.esc="editTask(task.id)">
           <span class="time text-nowrap">Создано: {{task.time}}</span>
             <div class="row">
-              <div v-if="task.isEditing" class="col-12">
+              <div v-if="task.isEditing" class="col-10">
                 <input ref="change" :value="task.task" class="form-control">
               </div>
               <div v-else class="col-10 d-flex align-items-center">
@@ -24,6 +24,11 @@
                 <a href="#" @click="deleteTask(task.id)" class="del my-auto">
                   &times;
                 </a>
+              </div>
+              <div v-else class="btn-group col-md-2 justify-content-end">
+                <button @click="editTask(task.id)" type="button" class="btn btn-default btn-sm">
+                  Отмена
+                </button>
               </div>
             </div>
         </form>
