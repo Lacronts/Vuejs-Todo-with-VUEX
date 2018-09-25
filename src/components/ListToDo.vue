@@ -7,11 +7,11 @@
         :key="task.id"
         class="list-group-item"
         >
-        <form v-on:submit.prevent="saveChange(task.id)" v-on:dblclick="editTask(task.id)" v-on:keyup.esc="editTask(task.id)">
+        <form v-on:submit.prevent="saveChange(task.id)" v-on:dblclick="editTask(task.id, task.task)" v-on:keyup.esc="editTask(task.id)">
           <span class="time text-nowrap">Создано: {{task.time}}</span>
             <div class="row">
               <div v-if="task.isEditing" class="col-10">
-                <input ref="change" :value="task.task" class="form-control">
+                <input ref="change" v-model="newValue" class="form-control">
               </div>
               <div v-else class="col-10 d-flex align-items-center">
                 <span>
@@ -67,6 +67,7 @@
     data(){
       return{
         activeView:'All',
+        newValue: '',
       }
     },
     computed:{
@@ -85,12 +86,12 @@
       deleteTask(id){
         this.$store.commit('deleteTask', id)
       },
-      editTask(id){
+      editTask(id, task){
+        this.newValue = task;
         this.$store.commit('editTask', id)
       },
       saveChange(id){
-        let value = this.$refs.change[0].value
-        this.$store.commit('saveTask', {id:id, task: value})
+        this.$store.commit('saveTask', {id:id, task: this.newValue})
       },
       toogle(id, event){
        this.$store.commit('doneTask', {id:id, checked: event.target.checked })
